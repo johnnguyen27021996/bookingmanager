@@ -1,0 +1,33 @@
+{
+  "name": "bookingmanager",
+  "version": "1.0.0",
+  "description": "demo simple booking manager tours",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnnguyen27021996/bookingmanager.git"
+  },
+  "author": "John Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnnguyen27021996/bookingmanager/issues"
+  },
+  "homepage": "https://github.com/johnnguyen27021996/bookingmanager#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.1.0",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "mongoose": "^5.7.3",
+    "nodemon": "^1.19.3",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  }
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<!--Coded with love by Mutiullah Samim-->
+
+<body>
+    <div class="container h-100">
+        <% if(error&&error.length>0){ %>
+            <div class="error-notice"><%= error %></div>
+        <% } %>
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
+                    <div class="brand_logo_container">
+                        <img src="data:image/png;base64,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"
+                            class="brand_logo" alt="Logo">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center form_container">
+                    <form action="/login" method="POST">
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="username" class="form-control input_user"
+                                placeholder="Enter Username ..." required autocomplete="off">
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="password" class="form-control input_pass"
+                                placeholder="Enter Password ..." required autocomplete="off">
+                        </div>
+                        <div class="justify-content-center mt-3 login_container">
+                            <button type="submit" name="button" class="btn login_btn">Login</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-center links">
+                        Don't have an account? <a href="#" class="ml-2">Sign Up</a>
+                    </div>
+                    <div class="d-flex justify-content-center links">
+                        <a href="#">Forgot your password?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
