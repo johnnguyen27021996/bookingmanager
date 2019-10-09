@@ -32,7 +32,8 @@ var newUser = new Schema({
         type: String,
     },
     avatar: {
-        type: String
+        type: String,
+        default: 'default-avatar.png'
     },
     role: {
         type: String,
@@ -41,7 +42,7 @@ var newUser = new Schema({
     },
     description: {
         type: String,
-        default: null
+        default: ''
     },
     active: {
         type: Boolean,

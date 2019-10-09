@@ -50,6 +50,15 @@ app.use('/logout', require('./routers/logout'));
 app.use('/dashboard', require('./routers/dashboard'));
 app.use('/profile', require('./routers/profile'));
 
+// const dbUser = require('./models/user.model');
+// var newuser = new dbUser();
+// newuser.username = 'admin';
+// newuser.password = newuser.createPass('1');
+// newuser.firstname = 'John';
+// newuser.lastname = 'Nguyen';
+// newuser.email = 'trung.nguyenthanh.2702@gmail.com';
+// newuser.save();
+
 // run server
 app.listen(process.env.PORT || process.env.port, function () {
     console.log('Running ...');
