@@ -4,6 +4,8 @@ const express = require('express');
 const path = require('path');
 // add .env file
 const dotenv = require('dotenv').config();
+// layout for webapp
+const layout = require('express-layout');
 // send data by method "POST"
 const bodyParser = require('body-parser');
 // cookie
@@ -27,6 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // set view
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+// setup layout
+app.use(layout());
 // setup body-parser
 app.use(bodyParser.json()); // file json body parser
 app.use(bodyParser.urlencoded({ extended: false })) // false: int, array || true: others datatype
@@ -42,7 +46,7 @@ app.use(flash());
 
 // setup link to page
 app.use('/login', require('./routers/login'));
-app.use('/admin', require('./routers/admin'));
+app.use('/dashboard', require('./routers/dashboard'));
 
 // run server
 app.listen(process.env.PORT || process.env.port, function () {
