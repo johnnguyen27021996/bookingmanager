@@ -46,6 +46,7 @@ app.use(flash());
 
 // setup link to page
 app.use('/login', require('./routers/login'));
+app.use('/logout', require('./routers/logout'));
 app.use('/dashboard', require('./routers/dashboard'));
 
 // run server

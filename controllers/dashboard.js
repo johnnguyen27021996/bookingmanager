@@ -1,7 +1,9 @@
 const dbUser = require('../models/user.model');
 
-exports.getAdmin = function (req, res) {
+exports.getDashboard = function (req, res) {
     res.render('dashboard', {
-        layout: 'layout'
+        layout: 'layout',
+        title: 'Dashboard',
+        admin: req.user
     });
 }

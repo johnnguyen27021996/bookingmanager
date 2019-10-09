@@ -28,7 +28,7 @@ var newUser = new Schema({
         type: String,
     },
     avatar: {
-        type: String,
+        type: String
     },
     role: {
         type: String,
