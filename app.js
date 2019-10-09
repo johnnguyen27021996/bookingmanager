@@ -48,6 +48,7 @@ app.use(flash());
 app.use('/login', require('./routers/login'));
 app.use('/logout', require('./routers/logout'));
 app.use('/dashboard', require('./routers/dashboard'));
+app.use('/profile', require('./routers/profile'));
 
 // run server
 app.listen(process.env.PORT || process.env.port, function () {

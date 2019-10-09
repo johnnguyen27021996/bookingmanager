@@ -13,7 +13,11 @@ var newUser = new Schema({
         type: String,
         required: true
     },
-    fullname: {
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
         type: String,
         required: true
     },
@@ -24,7 +28,7 @@ var newUser = new Schema({
     phone: {
         type: String
     },
-    address: {
+    country: {
         type: String,
     },
     avatar: {
@@ -32,8 +36,12 @@ var newUser = new Schema({
     },
     role: {
         type: String,
-        enum: ['Admin', 'User'],
-        default: 'User'
+        enum: ['CEO/Manager', 'Staff'],
+        default: 'Staff'
+    },
+    description: {
+        type: String,
+        default: null
     },
     active: {
         type: Boolean,
@@ -42,7 +50,8 @@ var newUser = new Schema({
     createAt: {
         type: Date,
         default: Date.now()
-    }
+    },
+    updateAt: Date
 })
 // create encryption password
 newUser.methods.createPass = function (pass) {
