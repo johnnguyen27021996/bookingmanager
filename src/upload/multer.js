@@ -10,8 +10,8 @@ function upload(directory_url) {
         }
     })
 
-    var upload = multer({ storage: storage });
+    var newupload = multer({ storage: storage });
 
-    return upload;
+    return newupload;
 }
 module.exports = upload;
