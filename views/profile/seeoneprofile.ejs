@@ -1,0 +1,144 @@
+<div class="content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title">See Profile</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-5 pr-md-1">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <input type="text" class="form-control" disabled="" placeholder="Address"
+                                        value="No Home No Life">
+                                </div>
+                            </div>
+                            <div class="col-md-3 px-md-1">
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" class="form-control" disabled="" placeholder="Username"
+                                        value="<%= user.username %>">
+                                </div>
+                            </div>
+                            <div class="col-md-4 pl-md-1">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email address</label>
+                                    <input type="email" class="form-control" name="email" disabled=""
+                                        placeholder="<%= user.email %>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control" disabled="" name="firstname"
+                                        placeholder="<%= user.firstname %>">
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" disabled="" name="lastname"
+                                        placeholder="<%= user.lastname %>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 pr-md-1">
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="text" class="form-control" name="phone" disabled=""
+                                        <% if(user.phone == null || user.phone == undefined) { %>
+                                        placeholder="No Phone Number" <% }else{ %> placeholder="<%= user.phone %>"
+                                        <% } %>>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-md-1">
+                                <div class="form-group">
+                                    <label>Country</label>
+                                    <input id="country" name="country" class="form-control" disabled=""
+                                        placeholder="<%= user.country %>">
+                                </div>
+                            </div>
+                            <div class="col-md-4 pl-md-1">
+                                <div class="form-group">
+                                    <label>Active</label>
+                                    <input type="text" name="active" class="isactive form-control" disabled=""
+                                        placeholder="<% if(user.active == true){ %> Enable
+                                    <% }else{ %>
+                                        Disable
+                                    <% } %>">
+                                </div>
+                            </div>
+                        </div>
+                        <!----------------------------------------->
+                        <div class="row">
+                            <div class="col-md-4 pr-md-1">
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <input type="text" class="form-control" disabled="" placeholder="<%= user.role %>">
+                                </div>
+                            </div>
+                            <div class="col-md-4 pl-md-1">
+                                <div class="form-group">
+                                    <label>Create At</label>
+                                    <input type="text" class="form-control" disabled="" placeholder="<%= date %>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>About Me</label>
+                                    <textarea rows="4" cols="80" class="form-control" disabled="" name="description"
+                                        placeholder="Here can be your description"
+                                        value="<%= user.description %>"><%= user.description %></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-user">
+                <div class="card-body">
+                    <p class="card-text">
+                        <div class="author">
+                            <div class="block block-one"></div>
+                            <div class="block block-two"></div>
+                            <div class="block block-three"></div>
+                            <div class="block block-four"></div>
+                            <a href="javascript:void(0)">
+                                <img class="avatar" src="/img/user/<%= user.avatar %>" alt="...">
+                                <h5 class="title"><%= user.firstname %> <%= user.lastname %></h5>
+                            </a>
+                            <p class="description">
+                                <%= user.role %>
+                            </p>
+                        </div>
+                    </p>
+                    <div class="card-description text-center">
+                        <%= user.description %>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="button-container">
+                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
+                            <i class="fab fa-facebook"></i>
+                        </button>
+                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                            <i class="fab fa-google-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
