@@ -49,6 +49,7 @@ app.use('/login', require('./routers/login'));
 app.use('/logout', require('./routers/logout'));
 app.use('/dashboard', require('./routers/dashboard'));
 app.use('/profile', require('./routers/profile'));
+app.use('/tour', require('./routers/tour'));
 
 // run server
 app.listen(process.env.PORT || process.env.port, function () {

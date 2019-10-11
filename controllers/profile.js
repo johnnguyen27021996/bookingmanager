@@ -105,7 +105,7 @@ exports.deleteProfile = function (req, res) {
 exports.addProfile = function (req, res) {
     res.render('profile/addprofile', {
         layout: 'layout',
-        title: 'Addd Profile',
+        title: 'Add Profile',
         admin: req.user,
         error: req.flash('error')
     });

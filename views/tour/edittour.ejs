@@ -1,0 +1,92 @@
+<div class="content">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title">Edit Tour</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/tour/edit/<%= tour._id %>" method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-5 pr-md-1">
+                                <div class="form-group">
+                                    <label>Tour Name</label>
+                                    <input type="text" name="name" class="form-control" disabled="" placeholder="<%= tour.name %>">
+                                </div>
+                            </div>
+                            <div class="col-md-3 px-md-1">
+                                <div class="form-group">
+                                    <label>Price Adult</label>
+                                    <input type="text" class="form-control" name="priceA"
+                                        placeholder="<%= tour.priceAdult %>">
+                                </div>
+                            </div>
+                            <div class="col-md-4 pl-md-1">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Price Children</label>
+                                    <input type="text" class="form-control" name="priceC"
+                                        placeholder="<%= tour.priceChildren %>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input type="text" class="form-control" name="duration"
+                                        placeholder="<%= tour.duration %>">
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label>Max People</label>
+                                    <input type="text" class="form-control" name="maxpeople"
+                                        placeholder="<%= tour.maxPeople %>">
+                                </div>
+                            </div>
+                        </div>
+                        <!----------------------------------------->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    <label>Thumbnail</label>
+                                    <input type="file" name="thumbnail" class="form-control"
+                                        style="padding: 0 !important;">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    <label>Currency</label>
+                                    <select name="currency" class="isactive form-control">
+                                        <option value="">Select Currency</option>
+                                        <option value="USD" <% if(tour.currency == 'USD'){ %> selected <% } %>>USD
+                                        </option>
+                                        <option value="VND" <% if(tour.currency == 'VND'){ %> selected <% } %>>Viet Nam
+                                            Dong</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>About Tour</label>
+                                    <textarea rows="4" cols="80" class="form-control" name="description"
+                                        placeholder="Here can be tour's description"><%= tour.description %></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!----------------------------------------->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-fill btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
