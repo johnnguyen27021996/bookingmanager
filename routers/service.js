@@ -12,9 +12,9 @@ var islog = function (req, res, next) {
 
 router.get('/', islog, controller.getAllService);
 
-// router.get('/edit/:id', islog, controller.getTour);
+router.get('/edit/:id', islog, controller.getEditService);
 
-// router.post('/edit/:id', islog, upload.single('thumbnail'), controller.postEditTour);
+router.post('/edit/:id', islog, upload.single('thumbnail'), controller.postEditService);
 
 router.get('/delete/:id', islog, controller.deleteService);
 

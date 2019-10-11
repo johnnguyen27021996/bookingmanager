@@ -15,66 +15,56 @@ exports.getAllService = function (req, res) {
     })
 }
 
-// exports.getTour = function (req, res) {
-//     let id = req.params.id;
-//     dbTour.findById(id).exec(function (err, doc) {
-//         dbUser.findOne({ username: req.user.username }, function (err, admin) {
-//             res.render('tour/edittour', {
-//                 layout: 'layout',
-//                 title: 'Edit Tour',
-//                 admin: admin,
-//                 tour: doc
-//             });
-//         })
-//     })
-// }
+exports.getEditService = function (req, res) {
+    let id = req.params.id;
+    dbService.findById(id).exec(function (err, doc) {
+        dbUser.findOne({ username: req.user.username }, function (err, admin) {
+            res.render('service/editservice', {
+                layout: 'layout',
+                title: 'Edit Service',
+                admin: admin,
+                service: doc
+            });
+        })
+    })
+}
 
-// exports.postEditTour = function (req, res) {
-//     let id = req.params.id;
-//     let rb = req.body,
-//         priceA = rb.priceA,
-//         priceC = rb.priceC,
-//         duration = rb.duration,
-//         maxPeople = rb.maxpeople,
-//         currency = rb.currency,
-//         thumbnail = req.file,
-//         description = rb.description;
-//     dbTour.findById(id).exec(function (err, doc) {
-//         if (priceA != '') {
-//             doc.priceAdult = priceA;
-//         }
-//         if (priceC != '') {
-//             doc.priceChildren = priceC;
-//         }
-//         if (duration != '') {
-//             doc.duration = duration;
-//         }
-//         if (maxPeople != '') {
-//             doc.maxPeople = maxPeople;
-//         }
-//         doc.currency = currency;
-//         if (thumbnail != undefined) {
-//             if (doc.thumbnail == '' || doc.thumbnail == undefined) {
-//                 doc.thumbnail = req.file.filename;
-//             } else {
-//                 fs.unlink('public/img/tour/' + doc.thumbnail, function () { });
-//                 doc.thumbnail = req.file.filename;
-//             }
-//         }
-//         doc.description = description;
-//         doc.save((err) => {
-//             if (!err) {
-//                 res.redirect('/tour');
-//             }
-//         })
-//     })
-// }
+exports.postEditService = function (req, res) {
+    let id = req.params.id;
+    let rb = req.body,
+        price = rb.price,
+        status = rb.status,
+        currency = rb.currency,
+        thumbnail = req.file,
+        description = rb.description;
+    dbService.findById(id).exec(function (err, doc) {
+        if (price != '') {
+            doc.price = price;
+        }
+        doc.status = status;
+        doc.currency = currency;
+        if (thumbnail != undefined) {
+            if (doc.thumbnail == '' || doc.thumbnail == undefined) {
+                doc.thumbnail = req.file.filename;
+            } else {
+                fs.unlink('public/img/service/' + doc.thumbnail, function () { });
+                doc.thumbnail = req.file.filename;
+            }
+        }
+        doc.description = description;
+        doc.save((err) => {
+            if (!err) {
+                res.redirect('/service');
+            }
+        })
+    })
+}
 
 exports.deleteService = function (req, res) {
     var id = req.params.id;
     dbService.findByIdAndRemove(id).exec(function (err, doc) {
         if (doc.thumbnail != '') {
-            fs.unlink('public/service/tour/' + doc.thumbnail, function () { })
+            fs.unlink('public/img/service/' + doc.thumbnail, function () { })
         }
         res.redirect('/service');
     })

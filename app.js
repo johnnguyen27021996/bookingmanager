@@ -10,9 +10,9 @@ const layout = require('express-layout');
 const bodyParser = require('body-parser');
 // cookie
 const cookieParser = require('cookie-parser');
-//session
-const session = require('express-session');
-//passport to login admin
+// session
+// const session = require('express-session');
+// passport to login admin
 const passport = require('passport');
 // notice
 const flash = require('connect-flash');
