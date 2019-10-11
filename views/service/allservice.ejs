@@ -1,0 +1,106 @@
+<style>
+    .fa-edit,
+    .fa-trash-alt,
+    .fa-eye {
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .fa-trash-alt,
+    .fa-eye {
+        margin-left: 7px;
+    }
+
+    .btn-label {
+        display: inline-block;
+        padding: 10px 0px;
+        border-radius: 3px 0 0 3px;
+    }
+
+    .btn-labeled {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .btn {
+        margin-bottom: 10px;
+    }
+</style>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="/service/add" class="btn btn-labeled btn-danger">
+                <span class="btn-label"><i class="fas fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add New Service</span>
+            </a>
+            <br>
+            <br>
+            <div class="card ">
+                <div class="card-header">
+                    <h4 class="card-title"> All Service</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table tablesorter " id="">
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th>
+                                        Thumbnail
+                                    </th>
+                                    <th>
+                                        Service Name
+                                    </th>
+                                    <th class="text-center">
+                                        Price
+                                    </th>
+                                    <th class="text-center">
+                                        Status
+                                    </th>
+                                    <th class="text-center">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% services.forEach(item=>{ %>
+                                <tr>
+                                    <td>
+                                        <% if(item.thumbnail == '' || item.thumbnail == undefined){ %>
+                                        <span style="color: #e74c3c">No Thumbnail</span>
+                                        <% }else{ %>
+                                        <img src="/img/service/<%= item.thumbnail %>" alt=""
+                                            style="width: 60xp; height: 60px;">
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <%= item.name %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= item.price %>
+                                    </td>
+                                    <td class="text-center">
+                                        <% if(item.status == true){ %>
+                                            <button type="button" class="btn btn-success">
+                                                PUBLIC
+                                            </button>
+                                        <% }else{ %>
+                                            <button type="button" class="btn btn-danger">
+                                                PRIVATE
+                                            </button>
+                                        <% } %>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="/service/edit/<%= item._id %>"><i class="fas fa-edit"
+                                                style="color: #e74c3c"></i></a>
+                                        <a href="/service/delete/<%= item._id %>"><i class="fas fa-trash-alt"
+                                                style="color: #bdc3c7"></i></a>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

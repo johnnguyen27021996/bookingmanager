@@ -83,7 +83,7 @@ exports.deleteTour = function (req, res) {
 exports.addTour = function (req, res) {
     res.render('tour/addtour', {
         layout: 'layout',
-        title: 'Add Profile',
+        title: 'Add Tour',
         admin: req.user,
         error: req.flash('error')
     });
@@ -111,7 +111,7 @@ exports.addNewTour = function (req, res) {
             newtour.duration = duration;
             newtour.maxPeople = maxPeople;
             if (thumbnail != undefined) {
-                newtour.avatar = req.file.filename;
+                newtour.thumbnail = req.file.filename;
             }
             newtour.currency = currency;
             newtour.description = description;

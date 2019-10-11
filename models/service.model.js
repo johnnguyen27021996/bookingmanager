@@ -11,12 +11,20 @@ var newService = new Schema({
         type: String,
         required: true
     },
+    currency: {
+        type: String,
+        required: true
+    },
     thumbnail: {
         type: String
     },
     status: {
         type: Boolean,
         default: false
+    },
+    description: {
+        type: String,
+        required: true
     },
     createAt: {
         type: Date,
