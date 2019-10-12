@@ -3,30 +3,38 @@ const mongoose = require('mongoose');
 // create a booking
 const Schema = mongoose.Schema;
 var newBooking = new Schema({
-    firtname: {
-        type: String,
+    tourID: {
+        type: Schema.Types.ObjectId,
+        ref: 'tours',
         required: true
     },
-    lastname: {
-        type: String,
+    guestID: {
+        type: Schema.Types.ObjectId,
+        ref: 'guests',
         required: true
     },
-    email: {
-        type: String,
-        required: true
-    },
-    phone: {
+    quanityAdult: {
         type: String
     },
-    address: {
-        type: String,
+    quanityChildren: {
+        type: String
     },
-    city: {
+    serviceID: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'services',
+        }
+    ],
+    amount: {
         type: String,
+        required: true
     },
-    active: {
-        type: Boolean,
-        default: false
+    note: {
+        type: String
+    },
+    bookAt: {
+        type: Date,
+        required: true
     },
     createAt: {
         type: Date,

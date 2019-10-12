@@ -18,15 +18,8 @@ var newGuest = new Schema({
     phone: {
         type: String
     },
-    address: {
+    country: {
         type: String,
-    },
-    city: {
-        type: String,
-    },
-    active: {
-        type: Boolean,
-        default: false
     },
     createAt: {
         type: Date,

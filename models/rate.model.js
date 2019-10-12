@@ -1,13 +1,21 @@
 // add mongoose to connect database
 const mongoose = require('mongoose');
-// create a country
+// create a rate
 const Schema = mongoose.Schema;
-var newCountry = new Schema({
-    name: {
+var newRate = new Schema({
+    star: {
         type: String,
         required: true
     },
-    description: {
+    comment: {
+        type: String,
+        required: true
+    },
+    tourID: {
+        type: Schema.Types.ObjectId,
+        ref: 'tours'
+    },
+    guestName: {
         type: String,
         required: true
     },
@@ -17,4 +25,4 @@ var newCountry = new Schema({
     }
 })
 // exports table tour
-module.exports = mongoose.model('countries', newCountry);
+module.exports = mongoose.model('rates', newRate);
