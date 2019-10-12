@@ -7,4 +7,3 @@ Demo simple booking manager for tours
 +  Service: add new service, see all service, edit service
 (not see detail a service)
 - Chua chinh duoc action cua user, edit name cua tour, service
-- Chua phan trang cho ca danh muc

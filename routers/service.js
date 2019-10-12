@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const controller = require('../controllers/service');
-const upload = require('../src/upload/multer')('public/img/service/');
+const upload = require('../src/upload/multer')(process.env.FOLDER_IMG_SERVICE);
 
 var islog = function (req, res, next) {
     if (req.isAuthenticated()) {
@@ -10,7 +10,7 @@ var islog = function (req, res, next) {
     }
 }
 
-router.get('/', islog, controller.getAllService);
+router.get('/(:page)?', islog, controller.getAllService);
 
 router.get('/edit/:id', islog, controller.getEditService);
 

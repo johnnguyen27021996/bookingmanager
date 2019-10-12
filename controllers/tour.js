@@ -3,13 +3,22 @@ const dbUser = require('../models/user.model');
 const dbTour = require('../models/tour.model');
 
 exports.getAllTour = function (req, res) {
-    dbTour.find({}, function (err, doc) {
+    let limit = 5, skip = 0;
+    let page = req.params.page;
+    skip = limit * page;
+    let totalpage = 0;
+    dbTour.find({}).limit(limit).skip(skip).exec(function (err, doc) {
         dbUser.findOne({ username: req.user.username }, function (err, admin) {
-            res.render('tour/alltour', {
-                layout: 'layout',
-                title: 'All Tour',
-                tours: doc,
-                admin: admin
+            dbTour.countDocuments({}, function (err, count) {
+                totalpage = count;
+                let pagination = Math.ceil(totalpage / limit);
+                res.render('tour/alltour', {
+                    layout: 'layout',
+                    title: 'All Tour',
+                    tours: doc,
+                    admin: admin,
+                    pagination: pagination
+                })
             })
         })
     })

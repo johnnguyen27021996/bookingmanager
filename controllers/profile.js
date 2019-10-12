@@ -2,13 +2,22 @@ const fs = require('fs');
 const dbUser = require('../models/user.model');
 
 exports.getAllProfile = function (req, res) {
-    dbUser.find({}, function (err, doc) {
+    let limit = 5, skip = 0;
+    let page = req.params.page;
+    skip = limit * page;
+    let totalpage = 0;
+    dbUser.find({}).limit(limit).skip(skip).exec(function (err, doc) {
         dbUser.findOne({ username: req.user.username }, function (err, admin) {
-            res.render('profile/allprofile', {
-                layout: 'layout',
-                title: 'All Profile',
-                users: doc,
-                admin: admin
+            dbUser.countDocuments({}, function (err, count) {
+                totalpage = count;
+                let pagination = Math.ceil(totalpage / limit);
+                res.render('profile/allprofile', {
+                    layout: 'layout',
+                    title: 'All Profile',
+                    users: doc,
+                    admin: admin,
+                    pagination: pagination
+                })
             })
         })
     })

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const controller = require('../controllers/tour');
-const upload = require('../src/upload/multer')('public/img/tour/');
+const upload = require('../src/upload/multer')(process.env.FOLDER_IMG_TOUR);
 
 var islog = function (req, res, next) {
     if (req.isAuthenticated()) {
@@ -10,7 +10,7 @@ var islog = function (req, res, next) {
     }
 }
 
-router.get('/', islog, controller.getAllTour);
+router.get('/(:page)?', islog, controller.getAllTour);
 
 router.get('/edit/:id', islog, controller.getTour);
 

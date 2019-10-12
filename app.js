@@ -51,6 +51,7 @@ app.use('/dashboard', require('./routers/dashboard'));
 app.use('/profile', require('./routers/profile'));
 app.use('/tour', require('./routers/tour'));
 app.use('/service', require('./routers/service'));
+app.use('/booking/', require('./routers/booking'));
 
 // run server
 app.listen(process.env.PORT || process.env.port, function () {

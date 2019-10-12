@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const controller = require('../controllers/profile');
-const upload = require('../src/upload/multer')('public/img/user/');
+const upload = require('../src/upload/multer')(process.env.FOLDER_IMG_PROFILE);
 
 var islog = function (req, res, next) {
     if (req.isAuthenticated()) {
@@ -10,7 +10,7 @@ var islog = function (req, res, next) {
     }
 }
 
-router.get('/', islog, controller.getAllProfile);
+router.get('/(:page)?', islog, controller.getAllProfile);
 
 router.get('/edit/:username', islog, controller.getProfile);
 

@@ -107,15 +107,21 @@
                                     </td>
                                     <td class="text-center">
                                         <% if(item.username == admin.username){ %>
-                                        <a href="/profile/edit/<%= item.username %>"><i class="fas fa-edit" style="color: #e74c3c"></i></a>
-                                        <a href="/profile/see/<%= item.username %>"><i class="fas fa-eye" style="color: #e67e22"></i></a>
+                                        <a href="/profile/edit/<%= item.username %>"><i class="fas fa-edit"
+                                                style="color: #e74c3c"></i></a>
+                                        <a href="/profile/see/<%= item.username %>"><i class="fas fa-eye"
+                                                style="color: #e67e22"></i></a>
                                         <% }else{ 
                                              if(item.role != 'CEO/Manager'){ %>
-                                        <a href="/profile/edit/<%= item.username %>"><i class="fas fa-edit" style="color: #e74c3c"></i></a>
-                                        <a href="/profile/see/<%= item.username %>"><i class="fas fa-eye" style="color: #e67e22"></i></a>
-                                        <a href="/profile/delete/<%= item._id %>"><i class="fas fa-trash-alt" style="color: #bdc3c7"></i></a>
+                                        <a href="/profile/edit/<%= item.username %>"><i class="fas fa-edit"
+                                                style="color: #e74c3c"></i></a>
+                                        <a href="/profile/see/<%= item.username %>"><i class="fas fa-eye"
+                                                style="color: #e67e22"></i></a>
+                                        <a href="/profile/delete/<%= item._id %>"><i class="fas fa-trash-alt"
+                                                style="color: #bdc3c7"></i></a>
                                         <% }else{ %>
-                                        <a href="/profile/see/<%= item.username %>"><i class="fas fa-eye" style="color: #e67e22"></i></a>
+                                        <a href="/profile/see/<%= item.username %>"><i class="fas fa-eye"
+                                                style="color: #e67e22"></i></a>
                                         <% } 
                                         } %>
                                     </td>
@@ -124,6 +130,19 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="pagination-hanler">
+                        <li class="pageitem"><a class="pagelink" disabled=""><i
+                                    class="fas fa-angle-double-left"></i></a></li>
+                        <% for(let i=0; i<pagination; i++){ %>
+                        <li class="pageitem"><a class="pagelink" href="/profile/<%= i %>"><%= i+1 %></a></li>
+                        <% } %>
+                        <li class="pageitem"><a class="pagelink" disabled=""><i
+                                    class="fas fa-angle-double-right"></i></a></li>
+                    </ul>
                 </div>
             </div>
         </div>

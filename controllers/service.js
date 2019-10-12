@@ -3,13 +3,22 @@ const dbUser = require('../models/user.model');
 const dbService = require('../models/service.model');
 
 exports.getAllService = function (req, res) {
-    dbService.find({}, function (err, doc) {
+    let limit = 5, skip = 0;
+    let page = req.params.page;
+    skip = limit * page;
+    let totalpage = 0;
+    dbService.find({}).limit(limit).skip(skip).exec(function (err, doc) {
         dbUser.findOne({ username: req.user.username }, function (err, admin) {
-            res.render('service/allservice', {
-                layout: 'layout',
-                title: 'All Service',
-                services: doc,
-                admin: admin
+            dbService.countDocuments({}, function (err, count) {
+                totalpage = count;
+                let pagination = Math.ceil(totalpage / limit);
+                res.render('service/allservice', {
+                    layout: 'layout',
+                    title: 'All Service',
+                    services: doc,
+                    admin: admin,
+                    pagination: pagination
+                })
             })
         })
     })
