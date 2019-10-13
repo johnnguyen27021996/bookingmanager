@@ -22,13 +22,39 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 offset-md-2">
+                <% if(error&&error.length>0){ %>
+                <div class="alert alert-danger text-center"><%= error %></div>
+                <% } %>
                 <h1 class="text-center">Book A Tour</h1>
-                <form action="/booking/..." method="POST">
+                <form action="/booking/add" method="POST">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="from-group">
+                                <label for="firstname">First name</label>
+                                <input type="text" name="firstname" class="form-control" id="firstname"
+                                    placeholder="Enter first name ..." required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="from-group">
+                                <label for="lastname">Last name</label>
+                                <input type="text" name="lastname" class="form-control" id="lastname"
+                                    placeholder="Enter last name ..." required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="from-group">
+                                <label for="email">Email</label>
+                                <input type="text" name="email" class="form-control" id="email"
+                                    placeholder="Enter email ..." required>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="tour" class="text-danger">Select Tour</label>
-                                <select name="tour" id="tour" class="form-control">
+                                <select name="tour" id="tour" class="form-control" required>
                                     <option value="">Select A Tour</option>
                                     <% tours.forEach(item=>{ %>
                                     <option value="<%= item._id %>"><%= item.name %></option>
@@ -41,15 +67,15 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="adult" class="text-success">Quantity Adult</label>
-                                <input type="text" name="adult" id="adult" class="form-control"
+                                <input type="number" min="0" name="adult" id="adult" class="form-control"
                                     placeholder="Enter quantity adult ..." value="1">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="children" class="text-success">Quantity Children</label>
-                                <input type="text" name="children" id="children" class="form-control"" placeholder="
-                                    Enter quantity children ..." value="1">
+                                <input type="number" min="0" name="children" id="children"
+                                    class="form-control"" placeholder=" Enter quantity children ..." value="1">
                             </div>
                         </div>
                     </div>
@@ -57,9 +83,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="service" class="text-danger">Select Service</label>
-                                <select name="service" id="service" class="form-control service" multiple>
+                                <select name="service" id="service" class="form-control" multiple>
                                     <% services.forEach(item=>{ %>
-                                    <option value="<%= item._id %>"><%= item.name %></option>
+                                    <option value="<%= item._id %>" selected><%= item.name %></option>
                                     <% }) %>
                                 </select>
                             </div>
@@ -69,7 +95,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="bookat" class="text-danger">Select Time Of Tour</label>
-                                <input type="date" name="bookat" class="form-control">
+                                <input type="date" name="bookat" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -102,7 +128,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('.service').select2();
+            $('#service').select2();
 
             // Amount
             ///////////////
@@ -197,13 +223,13 @@
 
             ///////////////////
             // CHANGE CHILDREN
-            $('#children').change(function(){
+            $('#children').change(function () {
                 var tourID = $('#tour').val(),
                     adult = $('#adult').val(),
                     children = $(this).val(),
                     service = $('#service').val();
-                if(tourID != ''){
-                    if(service != ''){
+                if (tourID != '') {
+                    if (service != '') {
                         $.ajax({
                             type: "POST",
                             url: "/booking/amountservice",
@@ -213,11 +239,11 @@
                                 children: children,
                                 service: service
                             },
-                            success: function(data){
+                            success: function (data) {
                                 $('#amount').val(data);
                             }
                         })
-                    }else{
+                    } else {
                         $.ajax({
                             type: "POST",
                             url: "/booking/amounttour",
@@ -226,7 +252,7 @@
                                 adult: adult,
                                 children: children
                             },
-                            success: function(data){
+                            success: function (data) {
                                 $('#amount').val(data);
                             }
                         })
@@ -243,35 +269,37 @@
                     adult = $('#adult').val(),
                     children = $('#children').val(),
                     service = $(this).val();
-                // if have service attach
-                if (service != '') {
-                    $.ajax({
-                        type: "POST",
-                        url: "/booking/amountservice",
-                        data: {
-                            id: tourID,
-                            adult: adult,
-                            children: children,
-                            service: service
-                        },
-                        success: function (data) {
-                            $('#amount').val(data);
-                        }
-                    })
-                    // if not have service attach
-                } else {
-                    $.ajax({
-                        type: "POST",
-                        url: "/booking/amounttour",
-                        data: {
-                            id: tourID,
-                            adult: adult,
-                            children: children
-                        },
-                        success: function (data) {
-                            $('#amount').val(data);
-                        }
-                    })
+                if (tourID != '') {
+                    // if have service attach
+                    if (service != '') {
+                        $.ajax({
+                            type: "POST",
+                            url: "/booking/amountservice",
+                            data: {
+                                id: tourID,
+                                adult: adult,
+                                children: children,
+                                service: service
+                            },
+                            success: function (data) {
+                                $('#amount').val(data);
+                            }
+                        })
+                        // if not have service attach
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            url: "/booking/amounttour",
+                            data: {
+                                id: tourID,
+                                adult: adult,
+                                children: children
+                            },
+                            success: function (data) {
+                                $('#amount').val(data);
+                            }
+                        })
+                    }
                 }
             })
             // CHANGE SERVICE

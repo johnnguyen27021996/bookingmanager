@@ -4,17 +4,92 @@ const dbGuest = require('../models/guest.model');
 const dbTour = require('../models/tour.model');
 const dbService = require('../models/service.model');
 
-exports.getAllBooking = function(req, res){
-    dbBooking.find({}).populate('guestID', 'tourID', 'serviceID').exec(function(err, doc){
-        dbUser.findOne({username: req.user.username}, function(err, admin){
-            res.render('boooking/allbooking', {
-                layout: 'layout',
-                title: 'All Booking',
-                admin: admin,
-                books: doc
+exports.getAllBooking = function (req, res) {
+    let limit = 5, skip = 0;
+    let page = req.params.page;
+    skip = limit * page;
+    let totalpage = 0;
+    dbBooking.find({}).populate('tourID').populate('guestID').populate('serviceID').limit(limit).skip(skip).exec(function (err, doc) {
+        console.log(doc);
+        dbUser.findOne({ username: req.user.username }, function (err, admin) {
+            dbBooking.countDocuments({}, function (err, count) {
+                totalpage = count;
+                let pagination = Math.ceil(totalpage / limit);
+                res.render('booking/allbooking', {
+                    layout: 'layout',
+                    title: 'All Booking',
+                    admin: admin,
+                    books: doc,
+                    pagination: pagination
+                })
             })
         })
     })
+}
+
+exports.addBooking = function (req, res) {
+    var rb = req.body,
+        firstname = rb.firstname,
+        lastname = rb.lastname,
+        email = rb.email,
+        tourID = rb.tour,
+        adult = rb.adult,
+        children = rb.children,
+        service = rb.service,
+        bookat = rb.bookat,
+        amount = rb.amount,
+        note = rb.note;
+    var timenow = Date.now();
+    var date = new Date(bookat);
+    if (amount == 0 || amount == '' || date <= timenow) {
+        req.flash('error', 'Error Booking');
+        res.redirect('/booking/test');
+    } else {
+        var newguest = new dbGuest({
+            firstname: firstname,
+            lastname: lastname,
+            email: email
+        });
+        newguest.save((err) => {
+            if (!err) {
+                dbGuest.find({}).sort({ _id: -1 }).limit(1).exec(function (err, guest) {
+                    dbTour.findById(tourID).exec(function (err, tour) {
+                        dbService.find({}, function (err, services) {
+                            var newbooking = new dbBooking();
+                            newbooking.tourID = tour._id;
+                            newbooking.guestID = guest[0]['_id'];
+                            newbooking.quanityAdult = adult;
+                            newbooking.quanityChildren = children;
+                            if (service != undefined) {
+                                if (typeof (service) === 'string') {
+                                    newbooking.serviceID.push(service);
+                                } else {
+                                    services.forEach(item1 => {
+                                        service.forEach(item2 => {
+                                            if (item1._id == item2) {
+                                                newbooking.serviceID.push(item1._id);
+                                            }
+                                        })
+                                    })
+                                }
+                            }
+                            newbooking.amount = amount;
+                            if (note != '') {
+                                newbooking.note = note;
+                            }
+                            newbooking.bookAt = bookat;
+                            newbooking.save((err) => {
+                                if (!err) {
+                                    req.flash('error', 'Booking Success');
+                                    res.redirect('/booking/test');
+                                }
+                            })
+                        })
+                    })
+                })
+            }
+        })
+    }
 }
 
 
@@ -25,50 +100,51 @@ exports.getAllBooking = function(req, res){
 ///////////////////
 // TEST BOOKING //
 // Load interface to booking
-exports.getFrontBooking = function(req, res){
-    dbTour.find({}, function(err, tour){
-        dbService.find({}, function(err, service){
+exports.getFrontBooking = function (req, res) {
+    dbTour.find({}, function (err, tour) {
+        dbService.find({}, function (err, service) {
             res.render('testbooking', {
                 layout: false,
                 tours: tour,
-                services: service
+                services: service,
+                error: req.flash('error')
             })
         })
     })
 }
-exports.amountTour = function(req, res){
+exports.amountTour = function (req, res) {
     var tourID = req.body.id,
         adult = req.body.adult,
         children = req.body.children;
     var amount = 0;
-    dbTour.findById(tourID).exec(function(err, doc){
-        if(doc.currency == 'VND'){
-            amount = Math.round((parseFloat(doc.priceAdult*adult) + parseFloat(doc.priceChildren*children))/23000, 1);
-        }else{
-            amount = parseFloat(doc.priceAdult*adult) + parseFloat(doc.priceChildren*children);
+    dbTour.findById(tourID).exec(function (err, doc) {
+        if (doc.currency == 'VND') {
+            amount = Math.round((parseFloat(doc.priceAdult * adult) + parseFloat(doc.priceChildren * children)) / 23000, 1);
+        } else {
+            amount = parseFloat(doc.priceAdult * adult) + parseFloat(doc.priceChildren * children);
         }
         res.send(JSON.stringify(amount));
     })
 }
-exports.amountService = function(req, res){
+exports.amountService = function (req, res) {
     var tourID = req.body.id,
         adult = req.body.adult,
         children = req.body.children,
         service = req.body.service;
     var amountService = amountTour = amount = 0;
-    dbTour.findById(tourID).exec(function(err, tour){
-        dbService.find({}, function(err, doc){
-            if(doc.currency == 'VND'){
-                amountTour = Math.round((parseFloat(tour.priceAdult*adult) + parseFloat(tour.priceChildren*children))/23000, 1);
-            }else{
-                amountTour = parseFloat(tour.priceAdult*adult) + parseFloat(tour.priceChildren*children);
+    dbTour.findById(tourID).exec(function (err, tour) {
+        dbService.find({}, function (err, doc) {
+            if (doc.currency == 'VND') {
+                amountTour = Math.round((parseFloat(tour.priceAdult * adult) + parseFloat(tour.priceChildren * children)) / 23000, 1);
+            } else {
+                amountTour = parseFloat(tour.priceAdult * adult) + parseFloat(tour.priceChildren * children);
             }
             doc.forEach(item1 => {
-                service.forEach( item2 => {
-                    if(item1._id == item2){
-                        if(item1.currency == 'VND'){
-                            amountService += Math.round(parseFloat(item1.price/23000), 1);
-                        }else{
+                service.forEach(item2 => {
+                    if (item1._id == item2) {
+                        if (item1.currency == 'VND') {
+                            amountService += Math.round(parseFloat(item1.price / 23000), 1);
+                        } else {
                             amountService += parseFloat(item1.price)
                         }
                     }

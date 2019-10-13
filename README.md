@@ -20,11 +20,10 @@ Start Project:
 
 
 # Processing:
-- get front book tour
-- change total price tour, not service
-+ lay duoc giao dien
-+ thay doi theo tour, service chinh xac
-+ loi khong thay doi duoc theo so luong nguoi lon, tre con chua fix dc
+- Xong add info guest, info booking
+- Chua viet delete booking, edit booking
+- Bat dau viet calendar booking
+
 
 # Error must fix
 - Chua chinh duoc action cua user

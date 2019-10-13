@@ -18,6 +18,8 @@ router.post('/amountservice', controller.amountService);
 
 router.get('/', islog, controller.getAllBooking);
 
+router.get('/p=:page?', islog, controller.getAllBooking);
 
+router.post('/add', controller.addBooking);
 
 module.exports = router;

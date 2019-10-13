@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // create a guest
 const Schema = mongoose.Schema;
 var newGuest = new Schema({
-    firtname: {
+    firstname: {
         type: String,
         required: true
     },
