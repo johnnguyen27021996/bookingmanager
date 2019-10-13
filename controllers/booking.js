@@ -94,7 +94,24 @@ exports.addBooking = function (req, res) {
 
 
 
-
+////////////////////
+// CALENDAR BOOKING
+exports.getCalendarBooking = function (req, res) {
+    dbUser.findOne({ username: req.user.username }, function (err, admin) {
+        res.render('booking/calendar', {
+            layout: 'layout',
+            title: 'Calender Booking',
+            admin: admin
+        })
+    }) 
+}
+exports.postCalendarBooking = function(req, res){
+    dbBooking.find({}).populate('tourID').populate('guestID').populate('serviceID').exec(function (err, doc) {
+        res.send(doc);
+    })
+}
+// CALENDAR BOOKING
+////////////////////
 
 
 ///////////////////

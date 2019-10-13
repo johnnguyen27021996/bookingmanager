@@ -15,6 +15,11 @@ router.post('/amounttour', controller.amountTour);
 router.post('/amountservice', controller.amountService);
 // test booking tour
 
+// calendar booking
+router.get('/calendar', controller.getCalendarBooking);
+router.post('/calendar', controller.postCalendarBooking);
+// calendar booking
+
 
 router.get('/', islog, controller.getAllBooking);
 

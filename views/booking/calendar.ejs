@@ -1,0 +1,137 @@
+<style>
+    .yearmonth li {
+        display: inline-block;
+        padding: 10px;
+        border: 1px solid blue;
+        cursor: pointer;
+        margin-right: 1px;
+    }
+
+    .calendar-header th {
+        border: 1px solid blueviolet;
+        width: 200px;
+        text-align: center;
+        height: 30px;
+    }
+
+    .calendar-body td {
+        border: 1px solid blueviolet;
+        width: 200px;
+        text-align: center;
+        height: 100px;
+    }
+    .day{
+        position: relative;
+        cursor: pointer;
+    }
+    .text-day{
+        color: cyan;
+        display: inline-block;
+        position: absolute;
+        top: 2px;
+        left: 3px;
+    }
+</style>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="yearmonth">
+                <ul class="pagination">
+                    <li class="pre">PRE</li>
+                    <li><span class="yearnow"></span> - <span class="monthnow"></span></li>
+                    <li class="next">NEXT</li>
+                </ul>
+            </nav>
+            <table class="calendar">
+                <thead class="calendar-header">
+                    <tr>
+                        <th>SUN</th>
+                        <th>MON</th>
+                        <th>TUE</th>
+                        <th>WED</th>
+                        <th>THU</th>
+                        <th>FRI</th>
+                        <th>SAT</th>
+                    </tr>
+                </thead>
+                <tbody class="calendar-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/js/core/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var date = new Date(),
+            nowYear = date.getFullYear(),
+            nowMonth = date.getMonth();
+
+        function calendar(nowMonth, nowMonth) {
+            $('.yearnow').text(nowYear);
+            $('.monthnow').text((nowMonth + 1));
+            var firstDayOfMonth = new Date(nowYear, nowMonth).getDay();
+            var dayOfMonth = 32 - new Date(nowMonth, nowMonth, 32).getDate();
+
+            var startDate = 1;
+
+            for (let i = 0; i < 5; i++) {
+                $('.calendar-body').append('<tr>');
+                for (let j = 0; j < 7; j++) {
+                    if (i === 0 && j < firstDayOfMonth) {
+                        $('.calendar-body').append('<td class="day"></td>');
+                    } else {
+                        if (startDate > dayOfMonth) {
+                            $('.calendar-body').append('<td class="day"></td>');
+                        } else {
+                            $('.calendar-body').append('<td class="day" data-day="' + startDate + '"><span class="text-day">' + startDate + '</span></td>');
+                            startDate++;
+                        }
+                    }
+                }
+                $('.calendar-body').append('</tr>');
+            }
+        }
+
+        $('.pre').click(function () {
+            nowYear = (nowMonth === 0) ? (nowYear - 1) : nowYear;
+            nowMonth = (nowMonth === 0) ? 11 : (nowMonth - 1);
+            $('.calendar-body').html('');
+            booking();
+        })
+
+        $('.next').click(function () {
+            nowYear = (nowMonth === 11) ? (nowYear + 1) : nowYear;
+            nowMonth = (nowMonth === 11) ? 0 : (nowMonth + 1);
+            $('.calendar-body').html('');
+            booking();
+        })
+
+
+        function booking() {
+            $.ajax({
+                type: "POST",
+                url: "/booking/calendar",
+                success: function (data) {
+                    calendar(nowYear, nowMonth);
+                    data.forEach(item => {
+                        var bookat = new Date(item.bookAt),
+                            createYear = bookat.getFullYear(),
+                            createMonth = bookat.getMonth(),
+                            createDay = bookat.getDate();
+                        if (nowMonth == createMonth && nowYear == createYear) {
+                            var lengthLI = $('.day').length;
+                            for (let i = 0; i < lengthLI; i++) {
+                                if (createDay == $('.day').eq(i).data('day')) {
+                                    $('.day').eq(i).append('Have Booking');
+                                }
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
+        booking();
+    })
+</script>

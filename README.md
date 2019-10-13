@@ -23,6 +23,9 @@ Start Project:
 - Xong add info guest, info booking
 - Chua viet delete booking, edit booking
 - Bat dau viet calendar booking
+- Tao duoc calendar va dua booking ra calendar
+- Chua tao event cho calendar
+- Chua viet edit guest, delete guest
 
 
 # Error must fix
