@@ -48,7 +48,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="children" class="text-success">Quantity Children</label>
-                                <input type="text" name="children" id="children" class="form-control"" placeholder=" Enter quantity children ..." value="1">
+                                <input type="text" name="children" id="children" class="form-control"" placeholder="
+                                    Enter quantity children ..." value="1">
                             </div>
                         </div>
                     </div>
@@ -104,89 +105,177 @@
             $('.service').select2();
 
             // Amount
-            // change tour
+            ///////////////
+            // CHANGE TOUR
             $('#tour').change(function () {
+                // get data of tour: tourID, quantity adult, quantity chirldren, service
                 var tourID = $(this).val(),
                     adult = $('#adult').val(),
-                    children = $('#children').val();
+                    children = $('#children').val(),
+                    service = $('#service').val();
+                // if tourID != ""
                 if (tourID != '') {
-                    $.ajax({
-                        type: "POST",
-                        url: "/booking/amounttour",
-                        data: {
-                            id: tourID,
-                            adult: adult,
-                            children: children
-                        },
-                        success: function (data) {
-                            $('#amount').val(data);
-                        }
-                    })
-                }else{
-                    $('#amount').val(''); 
+                    // if have service attach
+                    if (service != '') {
+                        $.ajax({
+                            type: "POST",
+                            url: "/booking/amountservice",
+                            data: {
+                                id: tourID,
+                                adult: adult,
+                                children: children,
+                                service: service
+                            },
+                            success: function (data) {
+                                $('#amount').val(data);
+                            }
+                        })
+                        // if not have service attach
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            url: "/booking/amounttour",
+                            data: {
+                                id: tourID,
+                                adult: adult,
+                                children: children
+                            },
+                            success: function (data) {
+                                $('#amount').val(data);
+                            }
+                        })
+                    }
+                    // if tourId = "" set amount = 0
+                } else {
+                    $('#amount').val('');
                 }
             })
-            // change adult
+            // CHANGE TOUR
+            //////////////
+
+            ///////////////
+            // CHANGE ADULT
             $('#adult').change(function () {
                 var tourID = $('#tour').val(),
                     adult = $(this).val(),
-                    children = $('#children').val();
+                    children = $('#children').val(),
+                    service = $('#service').val();
                 if (tourID != '') {
-                    $.ajax({
-                        type: "POST",
-                        url: "/booking/amounttour",
-                        data: {
-                            id: tourID,
-                            adult: adult,
-                            children: children
-                        },
-                        success: function (data) {
-                            $('#amount').val(data);
-                        }
-                    })
+                    if (service != '') {
+                        $.ajax({
+                            type: "POST",
+                            url: "/booking/amountservice",
+                            data: {
+                                id: tourID,
+                                adult: adult,
+                                children: children,
+                                service: service
+                            },
+                            success: function (data) {
+                                $('#amount').val(data);
+                            }
+                        })
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            url: "/booking/amounttour",
+                            data: {
+                                id: tourID,
+                                adult: adult,
+                                children: children
+                            },
+                            success: function (data) {
+                                $('#amount').val(data);
+                            }
+                        })
+                    }
+
                 }
             })
-            // change children
-            $('#children').change(function () {
+            // CHANGE ADULT
+            ////////////////
+
+            ///////////////////
+            // CHANGE CHILDREN
+            $('#children').change(function(){
                 var tourID = $('#tour').val(),
                     adult = $('#adult').val(),
-                    children = $(this).val();
-                if (tourID != '') {
-                    $.ajax({
-                        type: "POST",
-                        url: "/booking/amounttour",
-                        data: {
-                            id: tourID,
-                            adult: adult,
-                            children: children
-                        },
-                        success: function (data) {
-                            $('#amount').val(data);
-                        }
-                    })
+                    children = $(this).val(),
+                    service = $('#service').val();
+                if(tourID != ''){
+                    if(service != ''){
+                        $.ajax({
+                            type: "POST",
+                            url: "/booking/amountservice",
+                            data: {
+                                id: tourID,
+                                adult: adult,
+                                children: children,
+                                service: service
+                            },
+                            success: function(data){
+                                $('#amount').val(data);
+                            }
+                        })
+                    }else{
+                        $.ajax({
+                            type: "POST",
+                            url: "/booking/amounttour",
+                            data: {
+                                id: tourID,
+                                adult: adult,
+                                children: children
+                            },
+                            success: function(data){
+                                $('#amount').val(data);
+                            }
+                        })
+                    }
                 }
             })
-            // change service
+            // CHANGE CHILDREN
+            //////////////////
+
+            //////////////////
+            // CHANGE SERVICE
             $('#service').change(function () {
-                var service = $(this).val();
+                var tourID = $('#tour').val(),
+                    adult = $('#adult').val(),
+                    children = $('#children').val(),
+                    service = $(this).val();
+                // if have service attach
                 if (service != '') {
                     $.ajax({
                         type: "POST",
                         url: "/booking/amountservice",
                         data: {
+                            id: tourID,
+                            adult: adult,
+                            children: children,
                             service: service
                         },
                         success: function (data) {
-                            var amount = parseFloat($('#amount').val());
-                            $('#amount').val(amount + parseFloat(data));
+                            $('#amount').val(data);
                         }
                     })
-                }else{
-                    
+                    // if not have service attach
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/booking/amounttour",
+                        data: {
+                            id: tourID,
+                            adult: adult,
+                            children: children
+                        },
+                        success: function (data) {
+                            $('#amount').val(data);
+                        }
+                    })
                 }
             })
-
-
+            // CHANGE SERVICE
+            /////////////////
         })
     </script>
 

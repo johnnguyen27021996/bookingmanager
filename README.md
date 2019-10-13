@@ -6,7 +6,6 @@ Demo simple booking manager for tours
 + Tour: add new tour, see all tour, edit tour
 +  Service: add new service, see all service, edit service
 (not see detail a service)
-- Chua chinh duoc action cua user, edit name cua tour, service
 
 # Download, Setup and Run Project
 Start Project:
@@ -18,3 +17,14 @@ Start Project:
 + Password: 1
 - Open link: http://localhost:3000/login
 - To test booking enter link: http://localhost:3000/booking/test
+
+
+# Processing:
+- get front book tour
+- change total price tour, not service
++ lay duoc giao dien
++ thay doi theo tour, service chinh xac
++ loi khong thay doi duoc theo so luong nguoi lon, tre con chua fix dc
+
+# Error must fix
+- Chua chinh duoc action cua user

@@ -38,30 +38,45 @@ exports.getFrontBooking = function(req, res){
 }
 exports.amountTour = function(req, res){
     var tourID = req.body.id,
-    adult = req.body.adult,
-    children = req.body.children;
+        adult = req.body.adult,
+        children = req.body.children;
     var amount = 0;
     dbTour.findById(tourID).exec(function(err, doc){
-        amount = parseFloat(doc.priceAdult*adult) + parseFloat(doc.priceChildren*children);
+        if(doc.currency == 'VND'){
+            amount = Math.round((parseFloat(doc.priceAdult*adult) + parseFloat(doc.priceChildren*children))/23000, 1);
+        }else{
+            amount = parseFloat(doc.priceAdult*adult) + parseFloat(doc.priceChildren*children);
+        }
         res.send(JSON.stringify(amount));
     })
 }
 exports.amountService = function(req, res){
-    var service = req.body.service;
-    var amount = 0;
-    dbService.find({}, function(err, doc){
-        doc.forEach(item1 => {
-            service.forEach( item2 => {
-                if(item1._id == item2){
-                    if(item1.currency == 'VND'){
-                        amount += Math.round(parseFloat(item1.price/23000), 1);
-                    }else{
-                        amount += parseFloat(item1.price)
+    var tourID = req.body.id,
+        adult = req.body.adult,
+        children = req.body.children,
+        service = req.body.service;
+    var amountService = amountTour = amount = 0;
+    dbTour.findById(tourID).exec(function(err, tour){
+        dbService.find({}, function(err, doc){
+            if(doc.currency == 'VND'){
+                amountTour = Math.round((parseFloat(tour.priceAdult*adult) + parseFloat(tour.priceChildren*children))/23000, 1);
+            }else{
+                amountTour = parseFloat(tour.priceAdult*adult) + parseFloat(tour.priceChildren*children);
+            }
+            doc.forEach(item1 => {
+                service.forEach( item2 => {
+                    if(item1._id == item2){
+                        if(item1.currency == 'VND'){
+                            amountService += Math.round(parseFloat(item1.price/23000), 1);
+                        }else{
+                            amountService += parseFloat(item1.price)
+                        }
                     }
-                }
+                })
             })
+            amount = amountTour + amountService;
+            res.send(JSON.stringify(amount));
         })
-        res.send(JSON.stringify(amount));
     })
 }
 // TEST BOOKING //
