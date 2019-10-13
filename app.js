@@ -33,7 +33,7 @@ app.set('view engine', 'ejs');
 app.use(layout());
 // setup body-parser
 app.use(bodyParser.json()); // file json body parser
-app.use(bodyParser.urlencoded({ extended: false })) // false: int, array || true: others datatype
+app.use(bodyParser.urlencoded({ extended: true })) // false: int, array || true: others datatype
 // setup cookie
 app.use(cookieParser());
 // setup session

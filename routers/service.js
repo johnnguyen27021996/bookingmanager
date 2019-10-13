@@ -10,7 +10,9 @@ var islog = function (req, res, next) {
     }
 }
 
-router.get('/(:page)?', islog, controller.getAllService);
+router.get('/?', islog, controller.getAllService);
+
+router.get('/p=:page?', islog, controller.getAllService);
 
 router.get('/edit/:id', islog, controller.getEditService);
 

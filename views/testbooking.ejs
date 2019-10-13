@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+    <title>Book A Tour</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1 class="text-center">Book A Tour</h1>
+                <form action="/booking/..." method="POST">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tour" class="text-danger">Select Tour</label>
+                                <select name="tour" id="tour" class="form-control">
+                                    <option value="">Select A Tour</option>
+                                    <% tours.forEach(item=>{ %>
+                                    <option value="<%= item._id %>"><%= item.name %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="adult" class="text-success">Quantity Adult</label>
+                                <input type="text" name="adult" id="adult" class="form-control"
+                                    placeholder="Enter quantity adult ..." value="1">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="children" class="text-success">Quantity Children</label>
+                                <input type="text" name="children" id="children" class="form-control"" placeholder=" Enter quantity children ..." value="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="service" class="text-danger">Select Service</label>
+                                <select name="service" id="service" class="form-control service" multiple>
+                                    <% services.forEach(item=>{ %>
+                                    <option value="<%= item._id %>"><%= item.name %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="bookat" class="text-danger">Select Time Of Tour</label>
+                                <input type="date" name="bookat" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="amount" class="text-dager">Amount</label>
+                                <input type="text" name="amount" id="amount" class="form-control"
+                                    placeholder="Amount ...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="note">Add A Note</label>
+                                <textarea name="note" class="form-control" placeholder="Add a note"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Book Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.service').select2();
+
+            // Amount
+            // change tour
+            $('#tour').change(function () {
+                var tourID = $(this).val(),
+                    adult = $('#adult').val(),
+                    children = $('#children').val();
+                if (tourID != '') {
+                    $.ajax({
+                        type: "POST",
+                        url: "/booking/amounttour",
+                        data: {
+                            id: tourID,
+                            adult: adult,
+                            children: children
+                        },
+                        success: function (data) {
+                            $('#amount').val(data);
+                        }
+                    })
+                }else{
+                    $('#amount').val(''); 
+                }
+            })
+            // change adult
+            $('#adult').change(function () {
+                var tourID = $('#tour').val(),
+                    adult = $(this).val(),
+                    children = $('#children').val();
+                if (tourID != '') {
+                    $.ajax({
+                        type: "POST",
+                        url: "/booking/amounttour",
+                        data: {
+                            id: tourID,
+                            adult: adult,
+                            children: children
+                        },
+                        success: function (data) {
+                            $('#amount').val(data);
+                        }
+                    })
+                }
+            })
+            // change children
+            $('#children').change(function () {
+                var tourID = $('#tour').val(),
+                    adult = $('#adult').val(),
+                    children = $(this).val();
+                if (tourID != '') {
+                    $.ajax({
+                        type: "POST",
+                        url: "/booking/amounttour",
+                        data: {
+                            id: tourID,
+                            adult: adult,
+                            children: children
+                        },
+                        success: function (data) {
+                            $('#amount').val(data);
+                        }
+                    })
+                }
+            })
+            // change service
+            $('#service').change(function () {
+                var service = $(this).val();
+                if (service != '') {
+                    $.ajax({
+                        type: "POST",
+                        url: "/booking/amountservice",
+                        data: {
+                            service: service
+                        },
+                        success: function (data) {
+                            var amount = parseFloat($('#amount').val());
+                            $('#amount').val(amount + parseFloat(data));
+                        }
+                    })
+                }else{
+                    
+                }
+            })
+
+
+        })
+    </script>
+
+</body>
+
+</html>

@@ -10,7 +10,9 @@ var islog = function (req, res, next) {
     }
 }
 
-router.get('/(:page)?', islog, controller.getAllProfile);
+router.get('/', islog, controller.getAllProfile);
+
+router.get('/p=:page?', islog, controller.getAllProfile);
 
 router.get('/edit/:username', islog, controller.getProfile);
 

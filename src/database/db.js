@@ -3,7 +3,8 @@ module.exports = function(){
     // init connect
     mongoose.connect(process.env.MONGODB_URI, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: true
     });
     // notice connect
     var db = mongoose.connection;

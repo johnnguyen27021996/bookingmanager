@@ -103,7 +103,7 @@ exports.seeOneProfile = function (req, res) {
 
 exports.deleteProfile = function (req, res) {
     var id = req.params.id;
-    dbUser.findByIdAndRemove(id).exec(function (err, doc) {
+    dbUser.findByIdAndDelete(id).exec(function (err, doc) {
         if (doc.avatar != 'default-avatar.png') {
             fs.unlink('public/img/user/' + doc.avatar, function () { })
         }

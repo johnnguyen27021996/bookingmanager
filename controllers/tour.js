@@ -81,7 +81,7 @@ exports.postEditTour = function (req, res) {
 
 exports.deleteTour = function (req, res) {
     var id = req.params.id;
-    dbTour.findByIdAndRemove(id).exec(function (err, doc) {
+    dbTour.findByIdAndDelete(id).exec(function (err, doc) {
         if (doc.thumbnail != '') {
             fs.unlink('public/img/tour/' + doc.thumbnail, function () { })
         }

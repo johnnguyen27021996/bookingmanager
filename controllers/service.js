@@ -71,7 +71,7 @@ exports.postEditService = function (req, res) {
 
 exports.deleteService = function (req, res) {
     var id = req.params.id;
-    dbService.findByIdAndRemove(id).exec(function (err, doc) {
+    dbService.findByIdAndDelete(id).exec(function (err, doc) {
         if (doc.thumbnail != '') {
             fs.unlink('public/img/service/' + doc.thumbnail, function () { })
         }
