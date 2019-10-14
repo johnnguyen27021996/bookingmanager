@@ -20,11 +20,13 @@
         text-align: center;
         height: 100px;
     }
-    .day{
+
+    .day {
         position: relative;
         cursor: pointer;
     }
-    .text-day{
+
+    .text-day {
         color: cyan;
         display: inline-block;
         position: absolute;
@@ -84,7 +86,7 @@
                         if (startDate > dayOfMonth) {
                             $('.calendar-body').append('<td class="day"></td>');
                         } else {
-                            $('.calendar-body').append('<td class="day" data-day="' + startDate + '"><span class="text-day">' + startDate + '</span></td>');
+                            $('.calendar-body').append('<td class="day" data-day="' + startDate + '"><span class="text-day">' + startDate + '</span><i class="tim-icons icon-simple-add"></i></td>');
                             startDate++;
                         }
                     }
@@ -123,7 +125,8 @@
                             var lengthLI = $('.day').length;
                             for (let i = 0; i < lengthLI; i++) {
                                 if (createDay == $('.day').eq(i).data('day')) {
-                                    $('.day').eq(i).append('Have Booking');
+                                    $('.day').eq(i).html('');
+                                    $('.day').eq(i).append('<span class="text-day">' + createDay + '</span><span class="text-danger">Have Booking</span>');
                                 }
                             }
                         }
