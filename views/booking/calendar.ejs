@@ -26,6 +26,10 @@
         cursor: pointer;
     }
 
+    .day:hover {
+        background: rgba(255, 255, 255, .2);
+    }
+
     .text-day {
         color: cyan;
         display: inline-block;
@@ -33,13 +37,62 @@
         top: 2px;
         left: 3px;
     }
+
+    .dayShow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .8);
+        z-index: 10000;
+        display: none;
+    }
+
+    .closeDayShow {
+        color: red;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, .5);
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .info-main {
+        position: absolute;
+        margin-top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10001;
+    }
+
+    .percent{
+        display: block;
+        width: 90%;
+        height: 2px;
+        background: orangered;
+        margin: 0 auto;
+        margin-top: 4px;
+    }
+    .percent::before{
+        content: attr(data-width);
+        display: block;
+        width: max-content;
+        height: 2px;
+        background: chartreuse;
+    }
 </style>
 <div class="content">
     <div class="row">
         <div class="col-md-12">
             <nav class="yearmonth">
                 <ul class="pagination">
-                    <li class="pre">PRE</li>
+                    <li class="pre">PREVIEW</li>
                     <li><span class="yearnow"></span> - <span class="monthnow"></span></li>
                     <li class="next">NEXT</li>
                 </ul>
@@ -60,33 +113,83 @@
             </table>
         </div>
     </div>
+    <div class="dayShow">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="card info-main">
+                    <div class="card-header">
+                        <h4 class="card-title text-danger"><i class="tim-icons icon-alert-circle-exc"></i>&nbsp;&nbsp;&nbsp;Infomation Booking</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table tablesorter " id="">
+                                <thead class=" text-primary">
+                                    <tr>
+                                        <th>
+                                            Tour Name
+                                        </th>
+                                        <th>
+                                            Guest Name
+                                        </th>
+                                        <th class="text-center">
+                                            Adult
+                                        </th>
+                                        <th class="text-center">
+                                            Children
+                                        </th>
+                                        <th class="text-center">
+                                            Total
+                                        </th>
+                                        <th>
+                                            Note
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="info-table-show"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="closeDayShow"><i class="tim-icons icon-simple-remove"></i></div>
+    </div>
 </div>
 
 <script src="/js/core/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
+        // khoi tao ngay moi, lay nam hien tai, thang hien tai
         var date = new Date(),
             nowYear = date.getFullYear(),
             nowMonth = date.getMonth();
-
+        // function de show calendar
         function calendar(nowMonth, nowMonth) {
+            // them nam va thang 
             $('.yearnow').text(nowYear);
             $('.monthnow').text((nowMonth + 1));
+            // lay ngay dau tien trong thang: sun, mon, tue, wed, thu, fri, sat
             var firstDayOfMonth = new Date(nowYear, nowMonth).getDay();
+            // lay xem thang hien tai co bao nhieu ngay: 28, 29, 30, 31
             var dayOfMonth = 32 - new Date(nowMonth, nowMonth, 32).getDate();
-
+            // tao bien ngay, bien nay dung de xac dinh ngay(1=>31)
             var startDate = 1;
-
+            // vong 5 cho 5 hang( neu khong ghi san ngay trong tuan thi lap cho 6)
             for (let i = 0; i < 5; i++) {
+                // them du lieu vao calendar
                 $('.calendar-body').append('<tr>');
+                // vong lap cho 7 ngay trong tuan
                 for (let j = 0; j < 7; j++) {
+                    // neu o hang dau tien va bien dem ngay startDate < ngay dau tien cua thang
                     if (i === 0 && j < firstDayOfMonth) {
                         $('.calendar-body').append('<td class="day"></td>');
                     } else {
+                        // bien dem lon hon ngay cua thang do
                         if (startDate > dayOfMonth) {
                             $('.calendar-body').append('<td class="day"></td>');
+                            // thuc hien khi bien dem la cac ngay trong thang
                         } else {
-                            $('.calendar-body').append('<td class="day" data-day="' + startDate + '"><span class="text-day">' + startDate + '</span><i class="tim-icons icon-simple-add"></i></td>');
+                            $('.calendar-body').append('<td class="day" data-day="' + startDate + '" data-month="' + (nowMonth + 1) + '" data-year="' + nowYear + '"><span class="text-day">' + startDate + '</span><i class="tim-icons icon-simple-add"></i></td>');
                             startDate++;
                         }
                     }
@@ -94,22 +197,66 @@
                 $('.calendar-body').append('</tr>');
             }
         }
-
+        // show thang truoc
         $('.pre').click(function () {
             nowYear = (nowMonth === 0) ? (nowYear - 1) : nowYear;
             nowMonth = (nowMonth === 0) ? 11 : (nowMonth - 1);
             $('.calendar-body').html('');
             booking();
         })
-
+        // show thangg sau
         $('.next').click(function () {
             nowYear = (nowMonth === 11) ? (nowYear + 1) : nowYear;
             nowMonth = (nowMonth === 11) ? 0 : (nowMonth + 1);
             $('.calendar-body').html('');
             booking();
         })
+        // event cua li.day
+        $('.calendar-body').on('click', '.day', function () {
+            $('.dayShow').show();
+            $('.info-table-show').html('');
+            var day = $(this).data('day'),
+                month = $(this).data('month') - 1,
+                year = $(this).data('year');
+            $.ajax({
+                type: "POST",
+                url: "/booking/bookingday",
+                data: {
+                    day: day,
+                    month: month,
+                    year: year
+                },
+                success: function (data) {
+                    var html = '';
+                    if(data.length>0){
+                        data.forEach(item=>{
+                            html += '<tr>';
+                            html += '<td>'+item.tourID.name+'</td>';
+                            html += '<td>'+item.guestID.firstname +' '+ item.guestID.lastname+'</td>'
+                            html += '<td class="text-center">'+item.quanityAdult+'</td>';
+                            html += '<td class="text-center">'+item.quanityChildren+'</td>';
+                            html += '<td class="text-center">'+item.amount+'</td>';
+                            if(item.note==''||item.note==undefined){
+                                html += '<td>Guest does not save notes</td>';
+                            }else{
+                                html += '<td>'+item.note+'</td>';
+                            }
+                            html += '</tr>';
+                            $('.info-table-show').append(html);
+                            html = '';
+                        })
+                    }else{
+                        $('.info-table-show').html('<tr><td colspan="6"><h2 class="mt-5">No Guest booking in day</h2><a href="/booking/test" class="btn btn-success">Add Booking Now</a></td></tr>');
+                    }
+                }
+            })
+        })
 
+        $('.closeDayShow').click(function () {
+            $('.dayShow').hide();
+        })
 
+        // function main de lay du lieu tu database
         function booking() {
             $.ajax({
                 type: "POST",
@@ -121,13 +268,29 @@
                             createYear = bookat.getFullYear(),
                             createMonth = bookat.getMonth(),
                             createDay = bookat.getDate();
-                        if (nowMonth == createMonth && nowYear == createYear) {
-                            var lengthLI = $('.day').length;
-                            for (let i = 0; i < lengthLI; i++) {
-                                if (createDay == $('.day').eq(i).data('day')) {
-                                    $('.day').eq(i).html('');
-                                    $('.day').eq(i).append('<span class="text-day">' + createDay + '</span><span class="text-danger">Have Booking</span>');
-                                }
+                        var lengthLI = $('.day').length;
+                        for (let i = 0; i < lengthLI; i++) {
+                            if (nowMonth == createMonth && nowYear == createYear && createDay == $('.day').eq(i).data('day')) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/booking/bookingday",
+                                    data: {
+                                        day: createDay,
+                                        month: createMonth,
+                                        year: createYear
+                                    },
+                                    success: function(data){
+                                        var totalpeople = 0;
+                                        var percentnow =0;
+                                        data.forEach(item1=>{
+                                            totalpeople += parseInt(item1.people);
+                                            percentnow = totalpeople/20*100;
+                                        })
+                                        
+                                        $('.day').eq(i).html('');
+                                        $('.day').eq(i).append('<span class="text-day">' + createDay + '</span><p class="text-danger">Have Booking</p><span>'+totalpeople+'/20 orders</span><p class="percent" data-width="'+percentnow+'%"></p>');
+                                    }
+                                })
                             }
                         }
                     })

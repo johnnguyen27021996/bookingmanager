@@ -10,7 +10,6 @@ exports.getAllBooking = function (req, res) {
     skip = limit * page;
     let totalpage = 0;
     dbBooking.find({}).populate('tourID').populate('guestID').populate('serviceID').limit(limit).skip(skip).exec(function (err, doc) {
-        console.log(doc);
         dbUser.findOne({ username: req.user.username }, function (err, admin) {
             dbBooking.countDocuments({}, function (err, count) {
                 totalpage = count;
@@ -35,61 +34,89 @@ exports.addBooking = function (req, res) {
         tourID = rb.tour,
         adult = rb.adult,
         children = rb.children,
+        people = parseInt(adult) + parseInt(children),
         service = rb.service,
         bookat = rb.bookat,
         amount = rb.amount,
         note = rb.note;
     var timenow = Date.now();
     var date = new Date(bookat);
+    var year = date.getFullYear(),
+        month = date.getMonth(),
+        day = date.getDate(),
+        later = parseInt(day) + 1;
+    var datelater = new Date(year, month, later);
     if (amount == 0 || amount == '' || date <= timenow) {
         req.flash('error', 'Error Booking');
         res.redirect('/booking/test');
     } else {
-        var newguest = new dbGuest({
-            firstname: firstname,
-            lastname: lastname,
-            email: email
-        });
-        newguest.save((err) => {
-            if (!err) {
-                dbGuest.find({}).sort({ _id: -1 }).limit(1).exec(function (err, guest) {
-                    dbTour.findById(tourID).exec(function (err, tour) {
-                        dbService.find({}, function (err, services) {
-                            var newbooking = new dbBooking();
-                            newbooking.tourID = tour._id;
-                            newbooking.guestID = guest[0]['_id'];
-                            newbooking.quanityAdult = adult;
-                            newbooking.quanityChildren = children;
-                            if (service != undefined) {
-                                if (typeof (service) === 'string') {
-                                    newbooking.serviceID.push(service);
-                                } else {
-                                    services.forEach(item1 => {
-                                        service.forEach(item2 => {
-                                            if (item1._id == item2) {
-                                                newbooking.serviceID.push(item1._id);
-                                            }
-                                        })
+        var totalpeople = 0, maxpeople = 20;
+        dbBooking.find({ bookAt: { '$gte': date, '$lt': datelater } }).exec(function (err, doc) {
+            doc.forEach(book => {
+                totalpeople += parseInt(book.people);
+            })
+            totalpeople += parseInt(people);
+            if (totalpeople > maxpeople) {
+                req.flash('error', 'Larger number of people more than 20');
+                res.redirect('/booking/test');
+            } else {
+                var newguest = new dbGuest({
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email
+                });
+                newguest.save((err) => {
+                    if (!err) {
+                        dbGuest.find({}).sort({ _id: -1 }).limit(1).exec(function (err, guest) {
+                            dbTour.findById(tourID).exec(function (err, tour) {
+                                dbService.find({}, function (err, services) {
+                                    var newbooking = new dbBooking();
+                                    newbooking.tourID = tour._id;
+                                    newbooking.guestID = guest[0]['_id'];
+                                    newbooking.quanityAdult = adult;
+                                    newbooking.quanityChildren = children;
+                                    newbooking.people = people;
+                                    if (service != undefined) {
+                                        if (typeof (service) === 'string') {
+                                            newbooking.serviceID.push(service);
+                                        } else {
+                                            services.forEach(item1 => {
+                                                service.forEach(item2 => {
+                                                    if (item1._id == item2) {
+                                                        newbooking.serviceID.push(item1._id);
+                                                    }
+                                                })
+                                            })
+                                        }
+                                    }
+                                    newbooking.amount = amount;
+                                    if (note != '') {
+                                        newbooking.note = note;
+                                    }
+                                    newbooking.bookAt = bookat;
+                                    newbooking.save((err) => {
+                                        if (!err) {
+                                            req.flash('error', 'Booking Success');
+                                            res.redirect('/booking/test');
+                                        }
                                     })
-                                }
-                            }
-                            newbooking.amount = amount;
-                            if (note != '') {
-                                newbooking.note = note;
-                            }
-                            newbooking.bookAt = bookat;
-                            newbooking.save((err) => {
-                                if (!err) {
-                                    req.flash('error', 'Booking Success');
-                                    res.redirect('/booking/test');
-                                }
+                                })
                             })
                         })
-                    })
+                    }
                 })
             }
         })
     }
+}
+
+exports.deleteBooking = function (req, res) {
+    var tourID = req.params.id;
+    dbBooking.findByIdAndDelete(tourID).exec(function (err, doc) {
+        dbGuest.findByIdAndDelete(doc.guestID).exec(function (err, doc1) {
+            res.redirect('/booking');
+        })
+    })
 }
 
 
@@ -103,10 +130,21 @@ exports.getCalendarBooking = function (req, res) {
             title: 'Calender Booking',
             admin: admin
         })
-    }) 
+    })
 }
-exports.postCalendarBooking = function(req, res){
+exports.postCalendarBooking = function (req, res) {
     dbBooking.find({}).populate('tourID').populate('guestID').populate('serviceID').exec(function (err, doc) {
+        res.send(doc);
+    })
+}
+exports.postBookingDay = function (req, res) {
+    var day = req.body.day,
+        month = req.body.month,
+        year = req.body.year,
+        laterday = parseInt(day) + 1;
+    var bookingday = new Date(year, month, day);
+    var bookingdaylater = new Date(year, month, laterday);
+    dbBooking.find({ bookAt: { '$gte': bookingday, '$lt': bookingdaylater } }).populate('tourID').populate('guestID').populate('serviceID').exec(function (err, doc) {
         res.send(doc);
     })
 }

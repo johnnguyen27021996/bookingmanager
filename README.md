@@ -24,9 +24,16 @@ Start Project:
 - Chua viet delete booking, edit booking
 - Bat dau viet calendar booking
 - Tao duoc calendar va dua booking ra calendar
-- Chua tao event cho calendar
+- Dua du lieu the ngay
 - Chua viet edit guest, delete guest
 
 
 # Error must fix
 - Chua chinh duoc action cua user
+- Gioi han so luong nguoi trong 1 ngay theo tour
+
+
+# Khach
+-  nguoi lon 1 khach
+-  tre em > 5 tuoi 1 khach
+- tre em < 5 tuoi  khong tinh

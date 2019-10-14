@@ -19,6 +19,9 @@ var newBooking = new Schema({
     quanityChildren: {
         type: String
     },
+    people: {
+        type: String
+    },
     serviceID: [
         {
             type: Schema.Types.ObjectId,
