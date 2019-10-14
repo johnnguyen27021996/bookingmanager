@@ -82,7 +82,7 @@
     .percent::before{
         content: attr(data-width);
         display: block;
-        width: max-content;
+        width:var(--width);
         height: 2px;
         background: chartreuse;
     }
@@ -288,7 +288,7 @@
                                         })
                                         
                                         $('.day').eq(i).html('');
-                                        $('.day').eq(i).append('<span class="text-day">' + createDay + '</span><p class="text-danger">Have Booking</p><span>'+totalpeople+'/20 orders</span><p class="percent" data-width="'+percentnow+'%"></p>');
+                                        $('.day').eq(i).append('<span class="text-day">' + createDay + '</span><p class="text-danger">Have Booking</p><span>'+totalpeople+'/20 orders</span><p class="percent" data-width="'+percentnow+'%" style="--width:'+percentnow+'%"></p>');
                                     }
                                 })
                             }
