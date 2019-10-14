@@ -20,17 +20,12 @@ Start Project:
 
 
 # Processing:
-- Xong add info guest, info booking
 - Chua viet delete booking, edit booking
-- Bat dau viet calendar booking
-- Tao duoc calendar va dua booking ra calendar
-- Dua du lieu the ngay
 - Chua viet edit guest, delete guest
 
 
 # Error must fix
 - Chua chinh duoc action cua user
-- Gioi han so luong nguoi trong 1 ngay theo tour
 
 
 # Khach
