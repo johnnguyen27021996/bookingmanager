@@ -20,12 +20,12 @@ Start Project:
 
 
 # Processing:
-- Chua viet delete booking, edit booking
-- Chua viet edit guest, delete guest
-
+- Chua viet edit booking
 
 # Error must fix
 - Chua chinh duoc action cua user
+- Chua tao trang thai cho booking(confirmed, uncomfirmed) va guest(have contacted, not contacted)
+- Can tao ra duoc database ve COUNTRY, RATE
 
 
 # Khach

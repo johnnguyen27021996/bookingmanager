@@ -61,6 +61,17 @@
         cursor: pointer;
         font-weight: bold;
         font-size: 20px;
+        z-index: 10002;
+    }
+
+    .cover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .8);
+        z-index: 10001;
     }
 
     .info-main {
@@ -68,10 +79,10 @@
         margin-top: 30px;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 10001;
+        z-index: 10002;
     }
 
-    .percent{
+    .percent {
         display: block;
         width: 90%;
         height: 2px;
@@ -79,10 +90,11 @@
         margin: 0 auto;
         margin-top: 4px;
     }
-    .percent::before{
+
+    .percent::before {
         content: attr(data-width);
         display: block;
-        width:var(--width);
+        width: var(--width);
         height: 2px;
         background: chartreuse;
     }
@@ -118,7 +130,8 @@
             <div class="col-md-12">
                 <div class="card info-main">
                     <div class="card-header">
-                        <h4 class="card-title text-danger"><i class="tim-icons icon-alert-circle-exc"></i>&nbsp;&nbsp;&nbsp;Infomation Booking</h4>
+                        <h4 class="card-title text-danger"><i
+                                class="tim-icons icon-alert-circle-exc"></i>&nbsp;&nbsp;&nbsp;Infomation Booking</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -143,6 +156,9 @@
                                         <th>
                                             Note
                                         </th>
+                                        <th class="text-center">
+                                            Action
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody class="info-table-show"></tbody>
@@ -152,6 +168,7 @@
                 </div>
             </div>
         </div>
+        <div class="cover"></div>
         <div class="closeDayShow"><i class="tim-icons icon-simple-remove"></i></div>
     </div>
 </div>
@@ -228,31 +245,35 @@
                 },
                 success: function (data) {
                     var html = '';
-                    if(data.length>0){
-                        data.forEach(item=>{
+                    if (data.length > 0) {
+                        data.forEach(item => {
                             html += '<tr>';
-                            html += '<td>'+item.tourID.name+'</td>';
-                            html += '<td>'+item.guestID.firstname +' '+ item.guestID.lastname+'</td>'
-                            html += '<td class="text-center">'+item.quanityAdult+'</td>';
-                            html += '<td class="text-center">'+item.quanityChildren+'</td>';
-                            html += '<td class="text-center">'+item.amount+'</td>';
-                            if(item.note==''||item.note==undefined){
+                            html += '<td>' + item.tourID.name + '</td>';
+                            html += '<td>' + item.guestID.firstname + ' ' + item.guestID.lastname + '</td>'
+                            html += '<td class="text-center">' + item.quanityAdult + '</td>';
+                            html += '<td class="text-center">' + item.quanityChildren + '</td>';
+                            html += '<td class="text-center">' + item.amount + '</td>';
+                            if (item.note == '' || item.note == undefined) {
                                 html += '<td>Guest does not save notes</td>';
-                            }else{
-                                html += '<td>'+item.note+'</td>';
+                            } else {
+                                html += '<td>' + item.note + '</td>';
                             }
+                            html += '<td class="text-center"><a href="/guest/edit/' + item.guestID._id + '"><i class="tim-icons icon-single-02"></i></a>&nbsp;&nbsp;&nbsp;<a href="/booking/delete/' + item._id + '"><i class="tim-icons icon-trash-simple"></i></a></td>'
                             html += '</tr>';
                             $('.info-table-show').append(html);
                             html = '';
                         })
-                    }else{
-                        $('.info-table-show').html('<tr><td colspan="6"><h2 class="mt-5">No Guest booking in day</h2><a href="/booking/test" class="btn btn-success">Add Booking Now</a></td></tr>');
+                    } else {
+                        $('.info-table-show').html('<tr><td colspan="6"><h2 class="mt-5">No Guest booking in day</h2><a href="/booking/test" target="_blank" class="btn btn-success">Add Booking Now</a></td></tr>');
                     }
                 }
             })
         })
 
         $('.closeDayShow').click(function () {
+            $('.dayShow').hide();
+        })
+        $('.cover').click(function () {
             $('.dayShow').hide();
         })
 
@@ -279,16 +300,16 @@
                                         month: createMonth,
                                         year: createYear
                                     },
-                                    success: function(data){
+                                    success: function (data) {
                                         var totalpeople = 0;
-                                        var percentnow =0;
-                                        data.forEach(item1=>{
+                                        var percentnow = 0;
+                                        data.forEach(item1 => {
                                             totalpeople += parseInt(item1.people);
-                                            percentnow = totalpeople/20*100;
+                                            percentnow = totalpeople / 20 * 100;
                                         })
-                                        
+
                                         $('.day').eq(i).html('');
-                                        $('.day').eq(i).append('<span class="text-day">' + createDay + '</span><p class="text-danger">Have Booking</p><span>'+totalpeople+'/20 orders</span><p class="percent" data-width="'+percentnow+'%" style="--width:'+percentnow+'%"></p>');
+                                        $('.day').eq(i).append('<span class="text-day">' + createDay + '</span><p class="text-danger">Have Booking</p><span>' + totalpeople + '/20 orders</span><p class="percent" data-width="' + percentnow + '%" style="--width:' + percentnow + '%"></p>');
                                     }
                                 })
                             }

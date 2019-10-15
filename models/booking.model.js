@@ -19,6 +19,9 @@ var newBooking = new Schema({
     quanityChildren: {
         type: String
     },
+    // quanityInfant: {
+    //     type: String
+    // },
     people: {
         type: String
     },

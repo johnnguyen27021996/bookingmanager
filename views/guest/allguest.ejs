@@ -1,0 +1,123 @@
+<style>
+    .fa-edit,
+    .fa-trash-alt,
+    .fa-eye {
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .fa-trash-alt,
+    .fa-eye {
+        margin-left: 7px;
+    }
+
+    .btn-label {
+        display: inline-block;
+        padding: 10px 0px;
+        border-radius: 3px 0 0 3px;
+    }
+
+    .btn-labeled {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .btn {
+        margin-bottom: 10px;
+    }
+</style>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card ">
+                <div class="card-header">
+                    <h4 class="card-title"> All Guest</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table tablesorter " id="">
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th>
+                                        First Name
+                                    </th>
+                                    <th>
+                                        Last name
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Phone
+                                    </th>
+                                    <th>
+                                        Country
+                                    </th>
+                                    <th class="text-center">
+                                        Passport
+                                    </th>
+                                    <th class="text-center">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% guests.forEach(item=>{ %>
+                                <tr>
+                                    <td>
+                                        <%= item.firstname %>
+                                    </td>
+                                    <td>
+                                        <%= item.lastname %>
+                                    </td>
+                                    <td>
+                                        <%= item.email %>
+                                    </td>
+                                    <td>
+                                        <% if(item.phone == '' || item.phone == undefined){ %>
+                                        <span>No Phone Number</span>
+                                        <% }else{ %>
+                                        <span><%= item.phone %></span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if(item.country == '' || item.country == undefined){ %>
+                                        <span>No Country</span>
+                                        <% }else{ %>
+                                        <span><%= item.country %></span>
+                                        <% } %>
+                                    </td>
+                                    <td class="text-center">
+                                        <% if(item.passport == '' || item.passport == undefined){ %>
+                                        <span>No Passport</span>
+                                        <% }else{ %>
+                                        <span><%= item.passport %></span>
+                                        <% } %>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="/guest/edit/<%= item._id %>"><i class="fas fa-edit"
+                                                style="color: #e74c3c"></i></a>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="pagination-hanler">
+                        <li class="pageitem"><a class="pagelink" disabled=""><i
+                                    class="fas fa-angle-double-left"></i></a></li>
+                        <% for(let i=0; i<pagination; i++){ %>
+                        <li class="pageitem"><a class="pagelink" href="/guest/p=<%= i %>"><%= i+1 %></a></li>
+                        <% } %>
+                        <li class="pageitem"><a class="pagelink" disabled=""><i
+                                    class="fas fa-angle-double-right"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

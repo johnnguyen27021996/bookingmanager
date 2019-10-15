@@ -19,6 +19,10 @@ var newTour = new Schema({
         type: String,
         required: true
     },
+    // priceInfant: {
+    //     type: String,
+    //     required: true
+    // },
     currency: {
         type: String,
         required: true

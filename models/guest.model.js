@@ -21,6 +21,9 @@ var newGuest = new Schema({
     country: {
         type: String,
     },
+    passport: {
+        type: String
+    },
     createAt: {
         type: Date,
         default: Date.now()
