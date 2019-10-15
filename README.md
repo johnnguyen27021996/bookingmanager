@@ -1,11 +1,12 @@
 # bookingmanager
-Demo simple booking manager for tours
+Demo simple booking manager on calendar for tours
 - Completed:
 + Login with passport (not reset password)
-+ Profile: add new user, see all profile, see one detail profile, edit profile
-+ Tour: add new tour, see all tour, edit tour
-+  Service: add new service, see all service, edit service
-(not see detail a service)
++ Profile: add new user, see all profile, see one detail profile, edit profile, delete profile
++ Tour: add new tour, see all tour, edit tour, delete tour
++ Service: add new service, see all service, edit service, delete service
++ Booking: add booking, show booking on calendar, delete booking
++ Guest: add guest, edit guest, delete guest
 
 # Download, Setup and Run Project
 Start Project:
